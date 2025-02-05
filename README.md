@@ -1,4 +1,4 @@
-# Projeto: Gerenciamento de Conta
+# Projeto: Gerenciamento de Conta Bancaria
 
 
 Projeto realizado para praticar POO Python e alguns conceitos como relaciomento entre classes, utilizando herança. 
