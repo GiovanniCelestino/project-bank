@@ -8,13 +8,23 @@ class ContaBancaria:
         self.titular = titular
         self._saldo = 0  # Inicializa _saldo
         self.saldo = saldo
+        self._historico_transacao = []
+       
+
+    def histórico_transacao(self):
+        print('\nTRANSAÇÕES')
+        for transacao in self._historico_transacao:
+            print(transacao)
+        print('')
 
     def depositar(self, valor):
         if valor < 0:
             print('valor de saque não pode ser menor que zero')
+            
         
         else: 
             self._saldo += valor
+            self._historico_transacao.append(f'Deposito de R${valor}')
 
     def sacar(self, valor):
         if valor <= self._saldo:
@@ -25,6 +35,7 @@ class ContaBancaria:
             else:
               self._saldo -=valor
               print(f'Saque de {valor} realizado com sucesso!')
+              self._historico_transacao.append(f'Saque de R${valor}')
         
   
         else:
@@ -99,9 +110,12 @@ conta3.exibir_saldo()
 conta3.sacar(1000)
 conta3.exibir_saldo()
 conta3.depositar(-1000)
+conta3.depositar(300)
+conta3.sacar(100)
+conta3.sacar(80)
+conta3.depositar(20)
 
-
-
+conta3.histórico_transacao()
 """
 # Cria uma conta corrente e testa o saque com cheque especial
 conta_corrente = ContaCorrente(123456, "Giovanni", saldo=100)
