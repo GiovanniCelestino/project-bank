@@ -3,11 +3,12 @@
 
 
 class ContaBancaria:
-    def __init__(self, numero_conta, titular, saldo=0):
+    def __init__(self, numero_conta, titular, saldo=0, cpf=0):
         self.numero_conta = numero_conta
         self.titular = titular
         self._saldo = 0  # Inicializa _saldo
         self.saldo = saldo
+        self.cpf = cpf
         self._historico_transacao = []
        
 
@@ -65,8 +66,8 @@ class ContaBancaria:
 
 
 class ContaCorrente(ContaBancaria):
-    def __init__(self, numero_conta, titular, saldo=0, cheque_especial=500):
-        super().__init__(numero_conta, titular, saldo)
+    def __init__(self, numero_conta, titular, saldo=0, cpf=0, cheque_especial=500):
+        super().__init__(numero_conta, titular, saldo, cpf)
         self._cheque_especial = cheque_especial
         self._limite_original = cheque_especial #Guarda o limite total
         
@@ -91,8 +92,8 @@ class ContaCorrente(ContaBancaria):
 
 
 class ContaPoupanca(ContaBancaria):
-    def __init__(self, numero_conta, titular, saldo=0, taxa_rendimento = 0.005):
-        super().__init__(numero_conta, titular, saldo)
+    def __init__(self, numero_conta, titular, saldo=0, cpf=0, taxa_rendimento = 0.005):
+        super().__init__(numero_conta, titular, saldo, cpf)
         self.taxa_rendimento = taxa_rendimento #0.5% ao mês, por exemplo
 
     def aplicar_rendimento(self):
@@ -101,10 +102,54 @@ class ContaPoupanca(ContaBancaria):
         
 
 
+class Cliente:
+    def __init__(self, nome, cpf):
+      self.nome = nome
+      self.conta = []
+      self._cpf = []
+      self.cpf = cpf
 
-conta1 = ContaCorrente(123456, "Giovanni", 120)
-conta2 = ContaPoupanca(123457, "Giovanni", 300)
-conta3 = ContaBancaria(145871, "Giovanni", 1000)
+    def adicionar_conta(self, conta):
+        self.conta.append(conta)
+
+    def exibir_cliente(self):
+        print(f'\nDados do Cliente: {self.nome}')
+        for dados in self.conta:
+            print(f'Tipo de Conta: {dados.__class__.__name__}\nNúmero da conta: {dados.numero_conta}\nCPF: {dados.cpf}')
+            print()
+
+""" 
+    @property
+    def cpf(self):
+        return self._cpf
+
+    @cpf.setter
+    def cpf(self, valor):
+        if valor in self._cpf:
+            print(f'CPF {valor} já existe')
+        else:
+            self._cpf.append(valor)
+"""
+
+
+
+
+
+
+conta1 = ContaCorrente(123456, "Giovanni", 120, 460821)
+conta2 = ContaPoupanca(123457, "Giovanni", 300, 460821)
+conta3 = ContaBancaria(145871, "Giovanni", 1000, 460821)
+
+
+cliente1 = Cliente('Giovanni', 460821)
+cliente2 = Cliente('Carlos', 460821)
+
+cliente1.adicionar_conta(conta1)
+cliente1.adicionar_conta(conta2)
+cliente1.exibir_cliente()
+
+
+
 
 conta3.exibir_saldo()
 conta3.sacar(1000)
@@ -116,6 +161,8 @@ conta3.sacar(80)
 conta3.depositar(20)
 
 conta3.histórico_transacao()
+
+
 """
 # Cria uma conta corrente e testa o saque com cheque especial
 conta_corrente = ContaCorrente(123456, "Giovanni", saldo=100)
