@@ -103,52 +103,39 @@ class ContaPoupanca(ContaBancaria):
 
 
 class Cliente:
-    def __init__(self, nome, cpf):
+    def __init__(self,numero_conta, nome, cpf):
       self.nome = nome
-      self.conta = []
-      self._cpf = []
+      self.numero_conta = numero_conta
       self.cpf = cpf
+      self.cliente = []
 
-    def adicionar_conta(self, conta):
-        self.conta.append(conta)
+ 
+    def listar_clientes(self):
+        print(f'Nome Titular: {self.nome}\nCPF Titular: {self.cpf}\nNumero Conta Titular: {self.numero_conta}')
+        print()
+        
 
-    def exibir_cliente(self):
-        print(f'\nDados do Cliente: {self.nome}')
-        for dados in self.conta:
-            print(f'Tipo de Conta: {dados.__class__.__name__}\nNúmero da conta: {dados.numero_conta}\nCPF: {dados.cpf}')
-            print()
+conta1 = ContaCorrente(123456, "Giovanni", 120, 460820)
+conta2 = ContaPoupanca(123457, "Andre", 300, 460821)
+conta3 = ContaBancaria(145871, "Andre", 1000, 460821)
 
-""" 
-    @property
-    def cpf(self):
-        return self._cpf
+#CRIAR UMA REGRA PARA QUE CONTAS DIFERENTES POSSAM SER VINCULADAS NO NOME DO MESMO CLIENTE.
 
-    @cpf.setter
-    def cpf(self, valor):
-        if valor in self._cpf:
-            print(f'CPF {valor} já existe')
-        else:
-            self._cpf.append(valor)
-"""
+clientes = []
 
-
-
-
-
-
-conta1 = ContaCorrente(123456, "Giovanni", 120, 460821)
-conta2 = ContaPoupanca(123457, "Giovanni", 300, 460821)
-conta3 = ContaBancaria(145871, "Giovanni", 1000, 460821)
+def adicionar_cliente(conta):
+    for cliente in clientes:
+        if cliente.cpf == conta.cpf:
+            print('Cliente já existe dentro da base')
+            return
+    novo_cliente = Cliente(conta.numero_conta, conta.titular, conta.cpf)
+    clientes.append(novo_cliente)
+    novo_cliente.listar_clientes()
+    
 
 
-cliente1 = Cliente('Giovanni', 460821)
-cliente2 = Cliente('Carlos', 460821)
-
-cliente1.adicionar_conta(conta1)
-cliente1.adicionar_conta(conta2)
-cliente1.exibir_cliente()
-
-
+adicionar_cliente(conta3)
+adicionar_cliente(conta1)
 
 
 conta3.exibir_saldo()
@@ -156,19 +143,9 @@ conta3.sacar(1000)
 conta3.exibir_saldo()
 conta3.depositar(-1000)
 conta3.depositar(300)
+conta3.exibir_saldo()
 conta3.sacar(100)
 conta3.sacar(80)
 conta3.depositar(20)
 
 conta3.histórico_transacao()
-
-
-"""
-# Cria uma conta corrente e testa o saque com cheque especial
-conta_corrente = ContaCorrente(123456, "Giovanni", saldo=100)
-conta_corrente.sacar(300)
-conta_corrente.exibir_saldo()  # Saldo: R$0.00 | Cheque Especial: R$300.00
-
-# Cria uma conta poupança e aplica rendimento
-conta_poupanca = ContaPoupanca(123457, "Giovanni", saldo=1000)
-conta_poupanca.aplicar_rendimento()  # Rendimento aplicado! Novo saldo: R$1005.00"""
